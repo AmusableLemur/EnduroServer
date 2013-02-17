@@ -19,7 +19,7 @@ $loadRacers = function ($filename) {
         if (strlen($row) < 1) {
             continue;
         }
-        
+
         $row = explode(' ', $row);
 
         $racers[$row[0]][] = $row[1];
@@ -30,11 +30,11 @@ $loadRacers = function ($filename) {
 
 /**
  * Route for loading racer time data, label must be "start" or "finish", id must
- * be numeric. Returns result as JSON.
+ * be numeric.
  * @example GET /start/1 HTTP/1.1
  */
 $app->get('/{label}/{id}', function ($id, $label) use ($app, $loadRacers) {
-    return json_encode($loadRacers($label.'.txt'));
+    return implode("\n", $loadRacers($label.'.txt')[$id]);
 })
 ->assert('id', '\d+')
 ->assert('label', '(start|finish)');
